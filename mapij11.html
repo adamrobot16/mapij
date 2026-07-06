@@ -75,7 +75,7 @@
                 <button id="shuffle-btn" title="Sorok megkeverése">Keverés</button>
             </div>
         </div>
-        <textarea id="image-urls" rows="6">https://raw.githubusercontent.com/kittitanitoneni/K/refs/heads/main/Map_01.jpg</textarea>
+        <textarea id="image-urls" rows="6">https://raw.githubusercontent.com/adamrobot16/mapij/refs/heads/main/Map_01.jpg</textarea>
         
         <div class="list-selector-row">
             <label for="map-list-select" style="font-weight: bold; color: #495057;">Online listák:</label>
@@ -148,7 +148,7 @@
         let activeFilter = '4k'; 
         const MAX_ZOOM = 1.0; 
 
-        const defaultUrlsText = "https://raw.githubusercontent.com/kittitanitoneni/K/refs/heads/main/Map_01.jpg";
+        const defaultUrlsText = "https://raw.githubusercontent.com/adamrobot16/mapij/refs/heads/main/Map_01.jpg";
 
         const urlsInput = document.getElementById('image-urls');
         const shuffleBtn = document.getElementById('shuffle-btn');
@@ -210,10 +210,10 @@
         filter4kBtn.addEventListener('click', () => { activeFilter = activeFilter === '4k' ? 'none' : '4k'; updateFilterButtons(); });
 
         // --- GITHUB ONLINE LISTÁK ÉS JSON-EK LETÖLTÉSE ---
-        const githubBaseUrl = 'https://raw.githubusercontent.com/kittitanitoneni/K/refs/heads/main/mapij_text_';
+        const githubBaseUrl = 'https://raw.githubusercontent.com/adamrobot16/mapij/refs/heads/main/mapij_text_';
         let fetchedLists = {};
         
-        const githubJsonBaseUrl = 'https://raw.githubusercontent.com/kittitanitoneni/K/refs/heads/main/mapij_json_';
+        const githubJsonBaseUrl = 'https://raw.githubusercontent.com/adamrobot16/mapij/refs/heads/main/mapij_json_';
         let fetchedJsonLists = {}; 
 
         async function fetchExternalLists() {
