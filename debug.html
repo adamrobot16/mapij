@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>mapij - Hibakereső (Debug)</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f4f4f9; 
+        }
+        .control-panel { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            margin-bottom: 20px; 
+        }
+        textarea { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            resize: vertical; 
+            font-family: monospace;
+        }
+        button { 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 4px; 
+            background-color: #0056b3; 
+            color: white; 
+            font-weight: bold; 
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        button:hover { background-color: #004494; }
+        
+        #status-text {
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+        }
+
+        #viewport {
+            width: 100%;
+            height: 65vh;
+            overflow: auto; /* Görgetősávok, ha a kép nagyobb */
+            background-color: #ddd;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        #current-image {
+            display: none; /* Alapból rejtve van, amíg nem tölt be */
+            transform-origin: top left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <h2>Egyszerűsített Kép Tesztelő</h2>
+        <p>Másolj be <b>egy darab</b> direkt képlinket az alábbi mezőbe!</p>
+        
+        <textarea id="image-url" rows="3" placeholder="Példa: https://raw.githubusercontent.com/.../0001-01.jpg"></textarea>
+        <button id="load-btn">Kép Betöltése</button>
+        
+        <div id="status-text">Várakozás a linkre...</div>
+    </div>
+
+    <div id="viewport">
+        <img id="current-image" src="" alt="Teszt kép">
+    </div>
+
+    <script>
+        const urlInput = document.getElementById('image-url');
+        const loadBtn = document.getElementById('load-btn');
+        const statusText = document.getElementById('status-text');
+        const imgElement = document.getElementById('current-image');
+
+        loadBtn.addEventListener('click', () => {
+            // Veszünk minden szöveget a dobozból, és csak a legelső sort használjuk (ha többet is bemásoltál)
+            const url = urlInput.value.trim().split('\n')[0]; 
+
+            if (!url) {
+                statusText.style.color = "red";
+                statusText.textContent = "Hiba: Üres a mező!";
+                return;
+            }
+
+            // Alaphelyzetbe állítás
+            imgElement.style.display = 'none';
+            statusText.style.color = "blue";
+            statusText.textContent = `Betöltés folyamatban: ${url}...`;
+
+            // Böngésző natív képbetöltésének indítása
+            imgElement.onload = () => {
+                statusText.style.color = "green";
+                statusText.textContent = `Sikeres betöltés! Eredeti felbontás: ${imgElement.naturalWidth} x ${imgElement.naturalHeight} pixel.`;
+                
+                // Kép megjelenítése
+                imgElement.style.display = 'block';
+                
+                // Kicsinyítés, hogy beleférjen a képernyőbe (de bele tudsz nagyítani az ujjaddal a mobilon, vagy görgetni)
+                imgElement.style.width = '100%';
+                imgElement.style.height = 'auto';
+            };
+
+            imgElement.onerror = () => {
+                statusText.style.color = "red";
+                statusText.textContent = "Kritikus Hiba! A böngésző operációs rendszere megtagadta a kép megjelenítését (rossz link, hibás formátum, vagy memóriakorlát).";
+            };
+
+            // A forrás megadása indítja el a tényleges letöltést
+            imgElement.src = url;
+        });
+    </script>
+</body>
+</html>
